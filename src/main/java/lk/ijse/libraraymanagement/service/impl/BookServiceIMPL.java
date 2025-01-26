@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
+
 @Service
 @RequiredArgsConstructor
 public class BookServiceIMPL implements BookService {
@@ -39,6 +41,20 @@ public class BookServiceIMPL implements BookService {
     @Override
     public void updateBook(String bookId, BookDTO book) {
 
+        Optional<BookEntity> foundBook = bookDao.findById(bookId);
+        if(!foundBook.isPresent()){
+            throw new BookNotFoundException("Book not found");
+        }
+        foundBook.get().setTitle(book.getTitle());
+        foundBook.get().setPublisher(book.getPublisher());
+        foundBook.get().setIsbn(book.getIsbn());
+        foundBook.get().setAuthor(book.getAuthor());
+        foundBook.get().setEdition(book.getEdition());
+        foundBook.get().setPrice(book.getPrice());
+        foundBook.get().setAvilableQty(book.getAvilableQty());
+        foundBook.get().setTotalQty(book.getTotalQty());
+        foundBook.get().setLastUpdatedDate(UtilityData.generateTodayDate());
+        foundBook.get().setLastUpdatedTime(UtilityData.generateCreatedTime());
     }
 
     @Override
@@ -52,12 +68,19 @@ public class BookServiceIMPL implements BookService {
 
     @Override
     public BookDTO getSelectedBook(String bookId) {
-        return null;
+        Optional<BookEntity> foundBook = bookDao.findById(bookId);
+        if(!foundBook.isPresent()){
+            throw new BookNotFoundException("Book not found");
+        }
+        return entityDTOConversion
+                .toBookDTO(bookDao.getReferenceById(bookId));
     }
 
     @Override
     public List<BookDTO> getAllBooks() {
-        return null;
+        List<BookEntity> allBooks =
+                bookDao.findAll();
+        return entityDTOConversion.toBookDTOList(allBooks);
     }
 
 
