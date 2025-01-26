@@ -1,6 +1,7 @@
 package lk.ijse.libraraymanagement.controller;
 
 import lk.ijse.libraraymanagement.dto.BookDTO;
+import lk.ijse.libraraymanagement.exception.BookNotFoundException;
 import lk.ijse.libraraymanagement.service.BookService;
 import lk.ijse.libraraymanagement.service.impl.BookServiceIMPL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,9 @@ public class BookController {
     }
 
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addBook(@RequestBody BookDTO bookDTO){
-        var bookServiceIMPL = new BookServiceIMPL();
-        bookServiceIMPL.saveBook(bookDTO);
+        bookService.saveBook(bookDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -41,8 +41,17 @@ public class BookController {
     @DeleteMapping("{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable String bookId){
 
-        System.out.println(bookId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        try {
+            bookService.deleteBook(bookId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }catch (BookNotFoundException e){
+
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PatchMapping(("{bookId}"))
