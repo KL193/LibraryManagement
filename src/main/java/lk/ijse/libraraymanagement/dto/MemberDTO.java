@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -16,6 +17,6 @@ public class MemberDTO implements Serializable {
     private String memberId;
     private String name;
     private String email;
-    private String memberShipDate;
+    private LocalDate memberShipDate;
 
 }
