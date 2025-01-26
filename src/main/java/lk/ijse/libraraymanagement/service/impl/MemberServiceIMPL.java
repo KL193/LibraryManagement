@@ -14,7 +14,7 @@ public class MemberServiceIMPL implements MemberService {
 
     @Override
     public void saveMember(MemberDTO member) {
-        member.setMemberId(UtilityData.generatememeberId());
+        member.setMemberId(UtilityData.generatememberId());
         System.out.println(member);
     }
     @Override

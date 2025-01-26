@@ -10,8 +10,7 @@ public class UtilityData {
     public static String generateBookId(){
         return "B/"+UUID.randomUUID();
     }
-
-    public static String generatememeberId(){
+    public static String generatememberId(){
         return "M/"+UUID.randomUUID();
     }
     public static String generateLendingId(){
@@ -20,21 +19,15 @@ public class UtilityData {
     public static String generateStaffId(){
         return "S/"+UUID.randomUUID();
     }
-
     public static LocalDate generateTodayDate(){
         return LocalDate.now();
     }
-
     public static Time generateCreatedTime(){
-
         return Time.valueOf(LocalDateTime.now().toLocalTime());
-
     }
-
-    public static LocalDate generateCreatedDate(){
+    public static LocalDate generateReturnDate(){
         return LocalDate.now().plusDays(7);
     }
-
 
 
 
